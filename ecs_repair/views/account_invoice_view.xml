@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+    <record id="invoice_form" model="ir.ui.view">
+        <field name="name">ecs_repair.invoice_form</field>
+        <field name="model">account.invoice</field>
+        <field name="inherit_id" ref="account.invoice_form" />
+        <field name="arch" type="xml">
+        	<xpath expr="//field[@name='date_due']" position="after">
+        		<field name="vat_number" string="VAT Invoice Number"/>
+        		<field name="vat_date"  string="VAT Invoice Date"/>
+        	</xpath>
+        	<xpath expr="//notebook/page[@name='other_info']" position="after">
+            	<page string="Master Invoices" name="master_invoices">
+            		<field name="master_invoice_line_ids" readonly="1" style="pointer-events:none;">
+            			<tree>
+            				<field name="currency_id" invisible="1"/>
+            				<field name="product_id"/>
+            				<field name="repair_order_id" string="Description"/>
+            				<field name="quantity"/>
+            				<field name="uom_id"/>
+            				<field name="container_label" string="Container ID"/>
+            				<field name="labour_price"/>
+            				<field name="material_price"/>
+            				<field name="price_subtotal" string="Price"/>
+            				<field name="tax_ids" invisible="1"/>
+            				<field name="price_tax" string="Taxes"/>
+            				<field name="price_total" string="Subtotal"/>
+            			</tree>
+            		</field>
+            		<group class="oe_subtotal_footer oe_right" name="master_invoice_total">
+						<field name="amount_untaxed_master" string="Untaxed Amount"/>
+						<field name="amount_tax_master" string="Taxes"/>
+						<field name="amount_total_master" string="Total"/>
+					</group>
+            	</page>
+            </xpath>
+    	</field>
+    </record>
+
+	<record id="invoice_supplier_form" model="ir.ui.view">
+        <field name="name">ecs_repair.invoice_supplier_form</field>
+        <field name="model">account.invoice</field>
+        <field name="inherit_id" ref="account.invoice_supplier_form" />
+        <field name="arch" type="xml">
+        	<xpath expr="//field[@name='date_due']" position="after">
+        		<field name="vat_number" string="VAT Invoice Number"/>
+        		<field name="vat_date"  string="VAT Invoice Date"/>
+        	</xpath>
+        </field>
+    </record>
+</odoo>

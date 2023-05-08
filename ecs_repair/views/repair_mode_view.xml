@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+    <record id="view_repair_mode_tree" model="ir.ui.view">
+        <field name="name">ecs_repair.view_repair_mode_tree</field>
+        <field name="model">repair.mode</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="code" />
+                <field name="name" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_repair_mode_form" model="ir.ui.view">
+        <field name="name">ecs_repair.view_repair_mode_form</field>
+        <field name="model">repair.mode</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                        <label for="code" class="oe_edit_only"/>
+                        <field name="code" />
+                        </h1>
+                    </div>
+                    <group>
+                        <field name="name" />
+                        <field name="part_section" />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

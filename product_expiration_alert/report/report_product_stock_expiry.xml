@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<template id="report_product_stock_expiration">
+	    <t t-call="web.basic_layout">
+	        <t t-set="seq" t-value="0"/>
+	        <t t-set="product_dic" t-value="expiry_product"/>
+	        <div class="page" style="font-size:12px;">
+	            <style>
+	                .table_border{width:100%; border-collapse: collapse;}
+	                .table_border tr th{border-bottom:1px solid black; padding: 3px;}
+	                .table_border tr td{padding: 3px;border-bottom:1px solid black;}
+	                .text_center{text-align: center;}
+	                .big_font{font-size:30px;}
+	                .margin_header{margin-bottom:15px;}
+	            </style>
+	            <div class="text_center">
+	                <span style="font-size: 24px;"><strong>Product Stock Expiry Report</strong></span>
+	            </div><br/><br/>
+	            <table class="table_border" style="font-size:12px;">
+	                <div>
+	                    <tr>
+	                        <th class="text_center">No</th>
+	                        <th class="text_center">Product Name</th>
+	                        <th class="text_center">Product Number</th>
+	                        <th class="text_center">Product Category</th>
+	                        <th class="text_center">Location</th>
+	                        <th class="text_center">Product Quantity</th>
+	                        <th class="text_center">Lots/Serial Number</th>
+	                        <th class="text_center">Expiry Date</th>
+	                    </tr>
+	                </div>
+	                <tbody>
+	                    <t t-foreach="product_dic.get('lot_ids')" t-as="lot_id" t-if="lot_id.product_qty > 0">
+	                        <t t-foreach="lot_id.quant_ids.filtered(lambda k: k.location_id.usage == 'internal')" t-as="quant_id">
+	                         <t t-if="(product_dic['type'] == 'location' and quant_id.location_id.id in product_dic['location_ids']) or product_dic['type'] == 'all'">
+	                          <tr>
+	                              <t t-set="seq" t-value="seq+1"/>
+	                              <td>
+	                                  <span t-esc="seq"/>
+	                              </td>
+	                              <td>
+	                                  <span t-esc="lot_id.product_id.display_name"/>
+	                              </td>
+	                              <td>
+	                                  <span t-esc="lot_id.product_id.default_code" />
+	                              </td>
+	                              <td>
+	                                  <span t-esc="lot_id.product_id.categ_id.display_name" />
+	                              </td>
+	                              <td>
+	                                  <span t-esc="quant_id.location_id.display_name" />
+	                              </td>
+	                              <td class="text_center">
+	                                  <span t-esc="quant_id.quantity"/>
+	                              </td>
+	                               <td class="text_center">
+	                                  <span t-esc="lot_id.name"/>
+	                              </td>
+	                              <td class="text_center">
+	                                  <span t-esc="lot_id.use_date"/>
+	                              </td>
+	                          </tr>
+	                         </t>
+	                        </t>
+	                    </t>
+	                </tbody>
+	            </table>
+	        </div>
+	    </t>
+	</template>
+</odoo>

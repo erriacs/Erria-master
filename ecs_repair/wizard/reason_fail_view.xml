@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <act_window name="Reason QC Fail" id="act_qc_fail"
+        res_model="reason.qc.fail"
+        view_mode="form" target="new"/>
+
+    <record id="view_reason_qc_fail_form" model="ir.ui.view">
+        <field name="name">Return lines</field>
+        <field name="model">reason.qc.fail</field>
+        <field name="arch" type="xml">
+            <form>
+                <field name="repair_id" invisible="1"/>
+                <field name="detail_reason" required="1"/>
+                <footer>
+                    <button name="create_reason" string="Submit Reason" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel" />
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

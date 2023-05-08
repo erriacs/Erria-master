@@ -1,0 +1,164 @@
+<odoo>
+    <record id="repair_work_order_view_kanban" model="ir.ui.view">
+        <field name="name">ecs_repair.view_repair_work_order_kanban</field>
+        <field name="model">repair.work.order</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="state" class="o_kanban_small_column" string="Repair Work Order" create="0">
+                <field name="state" />
+                <progressbar field="state" colors='{"done": "success", "cancelled": "danger"}' />
+                <templates>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="oe_kanban_card oe_kanban_global_click">
+                            <div class="oe_kanban_body">
+                                <div>
+                                    <strong>
+                                        <field name="container_label" />
+                                    </strong>
+                                </div>
+                                <div>
+                                    <div><field name="qc_status" /></div>
+                                    <div><field name="name" /></div>
+                                    <div><field name="partner_id" /></div>
+                                    <div><field name="sts" /></div>
+                                </div>
+                            </div>&amp;nbsp;
+                            <div>
+                                <div class="float-right">
+                                    <field name="quantity" />
+                                </div>
+                                <div class="float-left">
+                                    <field name="component_id" string="MATERIAL" />
+                                </div>
+                            </div>
+                            <div class="oe_clear" />
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="repair_work_order_view_tree" model="ir.ui.view">
+        <field name="name">ecs_repair.view_repair_work_order_tree</field>
+        <field name="model">repair.work.order</field>
+        <field name="arch" type="xml">
+            <tree create="0">
+                <field name="container_label" />
+                <field name="name" />
+                <field name="partner_id" />
+                <field name="quantity" />
+                <field name="sts" />
+                <field name="start_time" />
+                <field name="end_time" />
+                <field name="state" />
+                <field name="qc_status" />
+                <field name="qc_time" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="repair_work_order_view_form" model="ir.ui.view">
+        <field name="name">ecs_repair.view_repair_work_order_form</field>
+        <field name="model">repair.work.order</field>
+        <field name="arch" type="xml">
+            <form string="Repair Work Order" create="0">
+                <header>
+                	<button name="action_start_repair" states="new,assigned" string="Start Repair" type="object" groups="ecs_repair.group_repair_supervisor"/>
+                	<button name="action_done" states="in_progress,rework" string="Done" type="object" groups="ecs_repair.group_repair_qc,ecs_repair.group_repair_supervisor"/>
+                	<!-- <button name="action_fail_qc" string="Fail QC" type="object" groups="ecs_repair.group_repair_qc,ecs_repair.group_repair_supervisor"
+                		attrs="{'invisible': ['|', ('state', '!=', 'done'), '|', ('qc_status', '=', 'passed'), ('rework_required', '=', True)]}"/>
+                	<button name="action_pass_qc" string="Pass QC" type="object" groups="ecs_repair.group_repair_qc,ecs_repair.group_repair_supervisor"
+                		attrs="{'invisible': ['|', ('state', '!=', 'done'), '|', ('qc_status', '=', 'passed'), ('rework_required', '=', True)]}"/> -->
+               		<button name="action_rework" string="Start Rework" type="object" groups="ecs_repair.group_repair_supervisor"
+                		attrs="{'invisible': ['|', ('state', '!=', 'done'), ('rework_required', '=', False), ]}"/>
+                	<button name="action_cancel" string="Cancel" type="object" groups="ecs_repair.group_repair_supervisor"
+                		attrs="{'invisible': [('state', 'in', ['cancel', 'done'])]}"/>
+                	<field name="state" widget="statusbar" statusbar_visible="new,in_progress,done"/>
+                </header>
+                <sheet>
+                	<div class="oe_button_box" name="button_box">
+                        <button name="action_view_return" type="object" class="oe_stat_button" icon="fa-truck" attrs="{'invisible': [('return_picking_ids', '=', [])]}">
+	        				<field name="return_picking_counts" widget="statinfo" string="Return"/>
+	        				<field name="return_picking_ids" invisible="1"/>
+        				</button>
+                        <button name="action_view_picking" type="object" class="oe_stat_button" icon="fa-truck" attrs="{'invisible': [('picking_ids', '=', [])]}">
+	        				<field name="picking_counts" widget="statinfo" string="Pickings"/>
+	        				<field name="picking_ids" invisible="1"/>
+        				</button>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="repair_order_id" string="Repair Work Order no." readonly="1"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group>
+                            <field name="container_label" />
+                            <field name="partner_id" readonly="1"/>
+                            <field name="mechanic1_id"/>
+                            <field name="mechanic2_id"/>
+                            <field name="mechanic3_id"/>
+                            <field name="mechanic4_id"/>
+                            <field name="warehouse_id" />
+                            <field name="wh_view_location_id" invisible="1" />
+                            <field name="start_time"/>
+                            <field name="end_time"/>
+                            <field name="repair_time" />
+                            <field name="note" />
+                            <field name="tariff_line_id" invisible="1"/>
+                        </group>
+                        <group>
+                            <field name="component_id" readonly="1"/>
+                            <field name="location_id" readonly="1"/>
+                            <field name="damage_type_id" readonly="1"/>
+                            <field name="repair_type_id" readonly="1"/>
+                            <field name="sts" string="STS (hrs)" readonly="1"/>
+                            <field name="dimension" readonly="1"/>
+                            <field name="quantity" readonly="1"/>
+                            <field name="qc_status" readonly="1"/>
+                            <field name="qc_time" readonly="1"/>
+                            <field name="rework_required" invisible="1"/>
+                            <field name="rework_date" invisible="1"/>
+                            <field name="rework_time" readonly="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Material Usage" name="page_line">
+                            <field name="material_line_ids" context="{'default_repair_id': 'repair_order_id'}"
+                            	attrs="{'readonly': ['|', ('state', 'in', ['cancel', 'done']), ('qc_status', '=', 'passed')]}">
+                                <tree editable="bottom">
+                                    <field name="product_id" string="Material Name" 
+                                    	domain="[('type', '=', 'product')]"/>
+                                    <field name="src_location_id" domain="[('location_id', 'child_of', parent.wh_view_location_id)]"/>
+                                    <field name="quantity" />
+                                    <field name="actual_quantity" />
+                                    <field name="uom_id" />
+                                    <field name="return_required" />
+                                </tree>
+                            </field>
+                            <group>
+                                <field name="attachment" />
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="repair_work_order_search_view" model="ir.ui.view">
+        <field name="name">ecs_repair.view_repair_work_order_search</field>
+        <field name="model">repair.work.order</field>
+        <field name="arch" type="xml">
+            <search string="Search Repair Work Order">
+                <field name="repair_order_id" string="Repair Work Order no."/>
+                <field name="container_label"/>
+                <group expand="0" string="Group by">
+                    <filter string="Container" name="container_label" domain="[]" context="{'group_by': 'container_label'}" />
+                    <filter string="Mechanic 1" name="mechanic1" domain="[]" context="{'group_by': 'mechanic1_id'}" />
+                    <filter string="State" name="state" domain="[]" context="{'group_by': 'state'}" />
+                    <filter string="QC status" name="qc_status" domain="[]" context="{'group_by': 'qc_status'}" />
+                </group>
+            </search>
+        </field>
+    </record>
+</odoo>

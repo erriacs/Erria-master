@@ -1,0 +1,72 @@
+<odoo>
+    <data>
+        <template id="eor_doc">
+            <div class="row">
+                <div class="col-6" style="padding-left:0px;padding-right:2px;padding-bottom:15px">
+                    <table class="table table-sm table-bordered" name="damage_line">
+                        <div style="padding-bottom:5px;">
+                            <strong>Container ID :</strong> 
+                            <span t-field="o.container_label"></span>
+                        </div>
+                        <thead>
+                            <tr>
+                                <th>Combined Code</th>
+                                <th>Quantity</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr t-foreach="o.damage_line_ids" t-as="item">
+                                <td><span t-field="item.name"/></td>
+                                <td><span t-field="item.quantity"/></td>
+                            </tr>
+                        </tbody>
+                        
+                    </table>
+                </div>
+                
+            </div>
+        </template>
+
+        <template id="ecs_repair_docs">
+            <t t-call="web.basic_layout">
+                <div class="page">
+                    <t t-foreach="docs" t-as="o">
+                        <t t-call="ecs_repair.eor_doc" t-lang="lang"/>
+                        
+                    </t>
+                </div>
+            </t>
+            
+        </template>
+
+        <record id="paperformat_a4eor" model="report.paperformat">
+            <field name="name">Paperformat A4 EOR</field>
+            <field name="default" eval="True" />
+            <field name="format">A4</field>
+            <field name="page_height">0</field>
+            <field name="page_width">0</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">5</field>
+            <field name="margin_bottom">10</field>
+            <field name="margin_left">7</field>
+            <field name="margin_right">7</field>
+            <field name="header_line" eval="False" />
+            <field name="header_spacing">35</field>
+            <field name="dpi">90</field>
+        </record>
+
+        <report
+            id="eor_report"
+            model="repair.order"
+            string="EOR"
+            report_type="qweb-pdf"
+            name="ecs_repair.ecs_repair_docs"
+            file="ecs_repair.ecs_repair_docs"
+            paperformat="paperformat_a4eor"
+            print_report_name="(
+                object.state == 'draft' and 'EOR - %s' % (object.name) or
+                'EOR - %s' % (object.name))"
+        />
+
+    </data>
+</odoo>

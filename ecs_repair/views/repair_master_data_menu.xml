@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <act_window id="action_repair_component"
+	    name="Component"
+	    res_model="repair.component"
+	    view_mode="tree,form" />
+
+    <act_window id="action_repair_location"
+	    name="Location"
+	    res_model="repair.location"
+	    view_mode="tree,form" />
+
+    <act_window id="action_repair_damages"
+	    name="Damages"
+	    res_model="damage.type"
+	    view_mode="tree,form" />
+
+    <act_window id="action_repair_types"
+	    name="Repair Types"
+	    res_model="repair.types"
+	    view_mode="tree,form" />
+
+	<act_window id="action_repair_mode"
+	    name="Repair Mode"
+	    res_model="repair.mode"
+	    view_mode="tree,form" />
+
+    <act_window id="action_repair_tariff"
+	    name="Repair Tariff"
+	    res_model="repair.tariff"
+	    view_mode="tree,form" />
+
+    <act_window id="action_repair_tariff_line"
+	    name="Repair Tariff Line"
+	    res_model="repair.tariff.line"
+	    view_mode="tree,form" />
+
+    <menuitem id="repair_master_data_menu"
+	    name="Repair Master Data"
+	    parent="repair.menu_repair_order"
+	    groups="ecs_repair.group_repair_manager" />
+    
+    <menuitem id="menu_repair_component"
+	    name="Component"
+	    action="action_repair_component"
+	    parent="ecs_repair.repair_master_data_menu"
+	    sequence="110" />
+
+    <menuitem id="menu_repair_location"
+	    name="Location"
+	    action="action_repair_location"
+	    parent="ecs_repair.repair_master_data_menu"
+	    sequence="120" />
+
+    <menuitem id="menu_repair_damages"
+	    name="Damages"
+	    action="action_repair_damages"
+	    parent="ecs_repair.repair_master_data_menu"
+	    sequence="130" />
+
+    <menuitem id="menu_repair_types"
+	    name="Repair Types"
+	    action="action_repair_types"
+	    parent="ecs_repair.repair_master_data_menu"
+	    sequence="140" />
+
+	<menuitem id="menu_repair_mode"
+	    name="Repair Mode"
+	    action="action_repair_mode"
+	    parent="ecs_repair.repair_master_data_menu"
+	    sequence="150" />
+ 
+    <menuitem id="menu_repair_tariff"
+	    name="Tariff"
+	    action="action_repair_tariff"
+	    parent="ecs_repair.repair_master_data_menu"
+	    sequence="160" />
+
+	<menuitem id="repair_tariff_line_menu"
+	    name="Tariff Line"
+	    action="action_repair_tariff_line"
+	    parent="ecs_repair.repair_master_data_menu"
+	    sequence="170" />
+</odoo>

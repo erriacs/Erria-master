@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<template id="report_ecs_purchase_quotation_doc">
+    <t t-call="web.basic_layout">
+        <t t-set="o" t-value="o.with_context(lang=o.partner_id.lang)"/>
+        <div class="page">
+        	<div class="row mb32">
+        		<div class="col-6">
+        			<div t-field="o.partner_id"
+		            t-options='{"widget": "contact", "fields": ["address", "name", "phone"], "no_marker": True, "phone_icons": True}'/>
+		            <p t-if="o.partner_id.vat"><t t-esc="o.company_id.country_id.vat_label or 'Tax ID'"/>: <span t-field="o.partner_id.vat"/></p>
+        		</div>
+        		<div class="col-6">
+        			<strong>Shipping address:</strong>
+        			<t t-if="o.dest_address_id">
+		                <div t-field="o.dest_address_id"
+		                    t-options='{"widget": "contact", "fields": ["address", "name", "phone"], "no_marker": True, "phone_icons": True}' name="purchase_shipping_address"/>
+	        		
+        			</t>
+	        		<t t-else="">
+	                    <div t-if="o.picking_type_id and o.picking_type_id.warehouse_id">
+	                        <span t-field="o.picking_type_id.warehouse_id.name"/>
+	                        <div t-field="o.picking_type_id.warehouse_id.partner_id" t-options='{"widget": "contact", "fields": ["address", "phone"], "no_marker": True, "phone_icons": True}'/>
+	                    </div>
+		            </t>
+	            </div>
+        	</div>
+            <div class="oe_structure"/>
+            <h2>Request for Quotation <span t-field="o.name"/></h2>
+            <table class="table table-sm">
+                <thead>
+                    <tr>
+                        <th><strong>CIMC Part No.</strong></th>
+                        <th><strong>Spec</strong></th>
+                        <th><strong>CIMC Description</strong></th>
+                        <th class="text-right"><strong>Qty</strong></th>
+                        <th class="text-center"><strong>UOM</strong></th>
+                        <th class="text-center"><strong>Price Before Tax</strong></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr t-foreach="o.order_line" t-as="line">
+                        <td><span t-esc="line.product_id.default_code"/></td>
+                        <td><span t-esc="line.product_id.dimension"/></td>
+                    	<td><span t-esc="line.product_id.name"/></td>
+                        <td class="text-right"><span t-esc="'{:1,}'.format(line.product_qty)"/></td>
+                        <td class="text-center"><span t-field="line.product_uom"/></td>
+                        <td class="text-right"><span t-esc="'{:,}'.format(int(line.price_subtotal))"/></td>
+                    </tr>
+                </tbody>
+            </table>
+            <p t-field="o.notes"/>
+            <div class="oe_structure"/>
+        </div>
+    </t>
+</template>
+
+<template id="report_ecs_purchase_quotation">
+    <t t-call="web.html_container">
+        <t t-foreach="docs" t-as="o">
+            <t t-call="ecs_purchase.report_ecs_purchase_quotation_doc" t-lang="o.partner_id.lang"/>
+        </t>
+    </t>
+</template>
+</odoo>

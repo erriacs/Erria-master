@@ -1,0 +1,37 @@
+<odoo>
+    <record id="repair.menu_repair_order" model="ir.ui.menu">
+    	<field name="groups_id" eval="[(6, 0, [ref('ecs_repair.group_repair_surveyor')])]"/>
+    </record>
+
+	<!-- Labeling RO as EOR-->
+    <record id="repair.action_repair_order_tree" model="ir.actions.act_window">
+    	<field name="name">EOR</field>
+    </record>
+
+    <act_window id="action_repair_order_menu"
+	    name="EOR"
+	    res_model="repair.order"
+	    view_mode="tree,form" />
+
+    <act_window id="action_repair_work_order"
+	    name="Repair Items"
+	    res_model="repair.work.order"
+	    view_mode="kanban,tree,form" />
+
+    <menuitem id="repair_order_menu"
+	    name="Order"
+	    parent="repair.menu_repair_order"
+	    sequence="2" />
+    
+    <menuitem id="repair_order"
+	    name="Repair Order"
+	    action="action_repair_order_menu"
+	    parent="ecs_repair.repair_order_menu"
+	    sequence="110" />
+
+    <menuitem id="repair_work_order"
+	    name="Repair Items"
+	    action="action_repair_work_order"
+	    parent="ecs_repair.repair_order_menu"
+	    sequence="120" />
+</odoo>

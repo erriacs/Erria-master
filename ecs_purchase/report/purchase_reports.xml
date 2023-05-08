@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<record id="purchase.report_purchase_quotation" model="ir.actions.report">
+		<field name="binding_model_id" eval="False"/>
+	</record>
+	<record id="purchase.action_report_purchase_order" model="ir.actions.report">
+		<field name="binding_model_id" eval="False"/>
+	</record>
+
+	<record id="ecs_purchase_paperformat_a4" model="report.paperformat">
+		<field name="name">ECS Purchase A4 Paper</field>
+		<field name="default" eval="True"/>
+		<field name="format">A4</field>
+		<field name="orientation">Portrait</field>
+		<field name="margin_top">15</field>
+		<field name="margin_bottom">10</field>
+		<field name="margin_left">10</field>
+		<field name="margin_right">10</field>
+		<field name="header_line" eval="False"/>
+		<field name="header_spacing">12</field>
+		<field name="dpi">90</field>		
+	</record>
+
+    <report
+        string="Purchase Order"
+        id="action_report_ecs_purchase_order"
+        model="purchase.order"
+        report_type="qweb-pdf"
+        name="ecs_purchase.report_ecs_purchase_order"
+        file="ecs_purchase.report_ecs_purchase_order"
+        print_report_name="
+            (object.state in ('draft', 'sent') and 'Request for Quotation - %s' % (object.name) or
+            'Purchase Order - %s' % (object.name))"
+		paperformat="ecs_purchase.ecs_purchase_paperformat_a4"
+    />
+
+    <report
+        string="Request for Quotation"
+        id="action_report_ecs_purchase_quotation"
+        model="purchase.order"
+        report_type="qweb-pdf"
+        name="ecs_purchase.report_ecs_purchase_quotation"
+        file="ecs_purchase.report_ecs_purchase_quotation"
+        print_report_name="'Request for Quotation - %s' % (object.name)"
+    	paperformat="ecs_purchase.ecs_purchase_paperformat_a4"
+    />
+</odoo>

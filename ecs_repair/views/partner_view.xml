@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+    <record id="view_partner_form" model="ir.ui.view">
+        <field name="name">ecs_repair.view_partner_form</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form" />
+        <field name="arch" type="xml">
+        	<xpath expr="//field[@name='vat']" position="after">
+        		<field name="edi_partner" string="EDI"/>
+        		<field name="edi_email_file" string="Email for EDI" widget="email"
+					attrs="{'required': [('edi_partner', '=', True)], 'invisible': [('edi_partner', '=', False)]}"/>
+        		<field name="edi_email_images" string="Email for Images" widget="email"
+					attrs="{'required': [('edi_partner', '=', True)], 'invisible': [('edi_partner', '=', False)]}"/>
+        	</xpath>
+        	<xpath expr="//notebook" position="inside">
+        		<page string="EDI Fields" attrs="{'invisible': [('edi_partner', '=', False)]}">
+        			<field name="edi_line_ids">
+        				<tree editable="bottom">
+	        				<field name="warehouse_id" string="Depot"/>
+	        				<field name="shop_code"/>
+	        				<field name="name" invisible="1"/>
+	        				<field name="sequence_id" string="Reference Number"/>
+        				</tree>
+        			</field>
+        		</page>
+        	</xpath>
+        	<xpath expr="//group[@name='sale']" position="inside">
+            	<field name="repair_invoice_type" attrs="{'invisible': [('customer', '=', False)]}"/>
+            	<field name="repair_invoice_day" attrs="{'invisible': [('repair_invoice_type', '!=', 'weekly')],
+            											 'required': [('repair_invoice_type', '=', 'weekly')]}"/>
+            	<field name="repair_invoice_date" attrs="{'invisible': [('repair_invoice_type', '!=', 'monthly')],
+           												  'required': [('repair_invoice_type', '=', 'monthly')]}"/>
+            </xpath>
+    	</field>
+    </record>
+
+</odoo>

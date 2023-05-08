@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="product_template_only_form_view" model="ir.ui.view">
+        <field name="name">ecs_stock.product_template_only_form_view</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_only_form_view" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='default_code']" position="attributes">
+            	<attribute name="string">Product Number</attribute>
+            </xpath>
+            <xpath expr="//field[@name='default_code']" position="after">
+            	<field name="dimension" string="Product Dimension"/>
+            </xpath>
+            <xpath expr="//field[@name='barcode']" position="after">
+            	<field name="return_required"/>
+            	<field name="part_number_generation"/>
+            </xpath>
+            <xpath expr="//div[@name='options']" position="inside">
+            	<div>
+                    <field name="repair_ok"/>
+                    <label for="repair_ok"/>
+                </div>
+            </xpath>
+    	</field>
+    </record>
+</odoo>

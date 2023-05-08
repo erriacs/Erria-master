@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+	<record id="view_consolidate_invoice_wizard" model="ir.ui.view">
+		<field name="name">ecs_repair.view_consolidate_invoice_wizard</field>
+		<field name="model">consolidate.invoice.wizard</field>
+		<field name="arch" type="xml">
+			<form string="Consolidate Invoice Repair Order">
+				<p class="oe_grey">
+				    Invoices will be created in draft so that you can review
+				    them before validation.
+				</p>
+				<footer>
+				<button name="consolidate_invoice" string="Create Invoice" type="object"
+				    class="btn-primary"/>
+				<button string="Cancel" class="btn-secondary" special="cancel"/>
+				</footer>
+			</form>
+		</field>
+	</record>
+
+	<act_window name="Consolidate Invoice"            
+	    res_model="consolidate.invoice.wizard"
+	    src_model="repair.order"
+	    view_mode="form"
+	    target="new"        
+	    key2="client_action_multi"    
+	    id="action_view_consolidate_invoice_wizard"
+	    groups="account.group_account_invoice"
+	    multi="True"/>
+
+</odoo>

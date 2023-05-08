@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+
+	<!-- Daily Consolidate Invoice -->
+	<record model="ir.cron" id="periodic_consolidate_invoice">
+		<field name="name">Periodic Consolidate Invoice</field>
+		<field name="active">0</field>
+		<field name="state">code</field>
+		<field name="interval_number">1</field>
+		<field name="interval_type">days</field>
+		<field name="numbercall">-1</field>
+		<field name="doall" eval="False" />
+		<field name="model_id" ref="model_res_partner" />
+		<field name="code">model.periodic_consolidate_invoice()</field>
+	</record>
+
+</odoo>

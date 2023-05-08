@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_stock_expiration_excel_extended" model="ir.ui.view">
+        <field name="name">stock.expiration.report.excel.extended.form</field>
+        <field name="model">stock.expiration.report.excel.extended</field>
+        <field name="arch" type="xml">
+            <form string="Excel Report file">
+                <group>
+                    <field name="excel_file" readonly="1" filename="file_name"/>
+                    <field name="file_name" invisible="1"/>
+                </group>
+                <footer>
+                    <button string="Cancel" class="oe_link oe_highlight" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+    <record id="action_stock_expiration_excel_extended" model="ir.actions.act_window">
+        <field name="name">Reports Excel</field>
+        <field name="view_id" ref="view_stock_expiration_excel_extended"/>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="res_model">stock.expiration.report.excel.extended</field>
+        <field name="target">new</field>
+    </record>
+
+    <record id="view_product_stock_expiration_form" model="ir.ui.view">
+        <field name="name">product.stock.expiration.form</field>
+        <field name="model">product.stock.expiration</field>
+        <field name="arch" type="xml">
+            <form string="Product Stock Expiry">
+                <group>
+                    <group>
+                        <field name="report_days"/>
+                        <field name="report_type" widget="radio"/>
+                        <field name="location_ids" widget="many2many_tags" attrs="{'invisible' : [('report_type', '!=', 'location')], 'required':[('report_type','=', 'location')]}" options="{'no_create_edit': True}"/>
+                    </group>
+                    <group>
+                        <field name="include_expire_stock"/>
+                    </group>
+                </group>
+                <footer>
+                    <button string='Print PDF' name="print_product_stock_expiration_report" type="object" default_focus="1" class="oe_highlight"/>
+                    or
+                    <button name="product_stock_expiration_excel_report" string="Print Excel" type="object" class="oe_highlight"/>
+                    or
+                    <button string="Cancel" class="btn-default" special="cancel"/>
+                </footer>   
+            </form>
+        </field>
+    </record>
+
+    <record id="action_product_stock_expiration" model="ir.actions.act_window">
+        <field name="name">Product Stock Expiry</field>
+        <field name="res_model">product.stock.expiration</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="view_id" ref="view_product_stock_expiration_form"/>
+    </record> 
+</odoo>

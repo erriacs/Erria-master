@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<!--
+Copyright (C) 2015 DevIntelle Consulting Service Pvt.Ltd (<http://www.devintellecs.com>).
+
+For Module Support : devintelle@gmail.com  or Skype : devintelle 
+ -->
+<odoo>
+    
+    <record id="dev_account_invoice_rate_inherit_form" model="ir.ui.view">
+        <field name="name">dev.account.invoice.rate.inherit.form</field>
+        <field name="model">account.invoice</field>
+        <field name="inherit_id" ref="account.invoice_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet//group/group/div" position="after">
+            	<field name="is_same_currency" invisible="1"/>
+                <label for="currency_rate" groups="base.group_multi_currency" attrs="{'invisible':[('is_same_currency','=',True)]}"/>
+                <div groups="base.group_multi_currency" attrs="{'invisible':[('is_same_currency','=',True)]}">
+                    <field name="currency_rate" attrs="{'invisible':[('is_same_currency','=',True)]}"/>
+                </div>
+            </xpath>
+        </field>
+    </record>
+    
+    <record id="dev_account_invoice_supplier_rate_inherit_form" model="ir.ui.view">
+        <field name="name">dev.account.invoice.supplier.rate.inherit.form</field>
+        <field name="model">account.invoice</field>
+        <field name="inherit_id" ref="account.invoice_supplier_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='currency_id']" position="after">
+            	<field name="is_same_currency" invisible="1"/>
+                <label for="currency_rate" groups="base.group_multi_currency" attrs="{'invisible':[('is_same_currency','=',True)]}" />
+                <div groups="base.group_multi_currency" attrs="{'invisible':[('is_same_currency','=',True)]}">
+                    <field name="currency_rate" attrs="{'invisible':[('is_same_currency','=',True)]}"/>
+                </div>
+            </xpath>
+        </field>
+    </record>
+    
+    
+</odoo>

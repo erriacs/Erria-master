@@ -1,0 +1,447 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_repair_order_damage_form_upload" model="ir.ui.view">
+        <field name="name">ecs_repair.view_repair_order_damage_form_upload</field>
+        <field name="model">repair.order.damage</field>
+        <field name="priority">1000</field>
+        <field name="arch" type="xml">
+            <form create="false" edit="false" delete="false">
+                <notebook>
+                    <page string="Damage">
+                        <group>
+                            <group>
+                                <field name="seq_num" readonly="1"/>
+                                <field name="repair_order_id" invisible="1"/>
+                                <field name="tariff_id" invisible="1"/>
+                                <field name="mode_id" invisible="1"/>
+                                <field name="edi_partner" invisible="0"/>
+                            </group>
+                        </group>
+                        <group>
+                            <group>
+                                <field name="component_id" readonly="1"/>
+                                <field name="location_id" readonly="1"/>
+                                <field name="damage_type_id" readonly="1"/>                                            
+                            </group>
+                            <group>
+                                <field name="repair_type_id" readonly="1"/>
+                                <field name="length" readonly="1"/>
+                                <field name="width" readonly="1"/>
+                                <field name="image_quantity" invisible="1" />                                          
+                            </group>
+                        </group>
+                        <group>
+                            <group>
+                                <field name="name" force_save="1"/>
+                                <field name="quantity" readonly="1"/>
+                                <field name="description" readonly="1"/>
+                                <field name="third_party_indicator" readonly="1" attrs="{'invisible': [('edi_partner', '=', False)], 'required': [('edi_partner', '=', True)]}"/>
+
+                            </group>
+                        </group>
+                        <group string="Upload Image" name="public_document">
+                            <field name="public_ids" mode="kanban,tree" nolabel="1">
+                                <tree create="0" edit="0" delete="0">
+                                    <field name="evidance" invisible="1" force_save="1"/>
+                                    <field name="document_name" readonly="1" force_save="1"/>
+                                    <field name="repair_line_id" readonly="1" invisible="1"/>
+                                    <field name="filesize" readonly="1" force_save="1"/>
+                                    <field name="generated" invisible="1"/>
+                                    <field name="hash_check" invisible="1"/>
+                                    <button name="wizard_uploader" type="object" string="Update Document"/>
+                                    <!-- <button name="delete_document" type="object" string="Delete Document"/> -->
+                                </tree>
+                                <form>
+                                    <sheet>
+                                        <group>
+                                            <field name="document_name" force_save="1"/>
+                                            <field name="document" filename="document_name"/>
+                                        </group>
+                                    </sheet>
+                                </form>
+                                <kanban class="o_kanban_mobile" create="0" edit="0" delete="0">
+                                    <field name="document_name" readonly="1" force_save="1"/>
+                                    <field name="filesize"/>
+                                    <field name="id"/>
+                                    <field name="document"/>
+                                    <templates>
+                                        <t t-name="kanban-box">
+                                            <div t-attf-class="oe_kanban_card oe_kanban_global_click">
+                                                <div class="o_kanban_image">
+                                                    <img t-att-src="kanban_image('public.document', 'document', record.id.raw_value)" alt="Document"/>
+                                                </div>
+                                                <div class="oe_kanban_details">
+                                                    <div class="oe_kanban_top_left">
+                                                        <strong>
+                                                            <field name="document_name" />
+                                                            <span>:</span>
+                                                            <field name="filesize"/>
+                                                        </strong>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </t>
+                                    </templates>
+                                </kanban>
+                            </field>
+                        </group>
+                        <div class="oe_edit_only">
+                            <button name="wizard_uploader" attrs="{'invisible': [('image_quantity', '>=', 5)]}" string="Upload Document" type="object" class="oe_highlight"/>
+                        </div>
+                    </page>
+                </notebook>
+            </form>
+        </field>
+    </record>
+    <record id="view_repair_order_tree" model="ir.ui.view">
+        <field name="name">ecs_repair.view_repair_order_tree</field>
+        <field name="model">repair.order</field>
+        <field name="inherit_id" ref="repair.view_repair_order_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="before">
+                <field name="container_label" />
+            </xpath>
+            <xpath expr="//field[@name='product_id']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='partner_id']" position="after">
+                <field name="product_id" />
+                <field name="warehouse_id" string="Depot" />
+                <field name="estimation_date" />
+                <field name="posting_date" />
+                <field name="approval_date" />
+                <field name="planned_date" />
+                <field name="completion_date" />
+            </xpath>
+            <xpath expr="//field[@name='address_id']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='guarantee_limit']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+        </field>
+    </record>
+    
+    <record id="view_repair_order_form" model="ir.ui.view">
+        <field name="name">ecs_repair.view_repair_order_form</field>
+        <field name="model">repair.order</field>
+        <field name="inherit_id" ref="repair.view_repair_order_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='action_created_invoice']" position="after">
+                <button type="object" name="action_view_repair_item" class="oe_stat_button" icon="fa-list" attrs="{'invisible':[('state', 'in', ('draft','confirmed','cancel'))]}">
+                    <field name="work_order_line_count" widget="statinfo" string="Repair Items"/>
+                    <field name="work_order_line_ids" invisible="1"/>
+                </button>
+            </xpath>
+            <xpath expr="//form/header/button[@name='action_validate']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//form/header/button[@name='action_repair_invoice_create']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//form/header/button[@name='action_repair_cancel'][1]" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//form/header/button[@name='action_repair_cancel'][2]" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='state']" position="attributes">
+                <attribute name="statusbar_visible">draft,confirmed</attribute>
+            </xpath>
+            <xpath expr="//form/header" position="inside">
+                <button name="action_submit" states="draft" string="Submit Quotation" type="object" groups="ecs_repair.group_repair_manager,ecs_repair.group_repair_qc,ecs_repair.group_repair_supervisor,ecs_repair.group_repair_surveyor"/>
+                <button name="action_approve" states="submitted" string="Approve" type="object" groups="ecs_repair.group_repair_manager,ecs_repair.group_repair_qc,ecs_repair.group_repair_supervisor"/>
+                <button name="action_reject" states="submitted" string="Reject" type="object" groups="ecs_repair.group_repair_manager,ecs_repair.group_repair_qc,ecs_repair.group_repair_supervisor"/>
+                <button name="action_reestimate" states="reject" string="Re-estimate" type="object" groups="ecs_repair.group_repair_manager"/>
+                <button name="action_confirm_repair" states="approved" string="Confirm" type="object" groups="ecs_repair.group_repair_manager,ecs_repair.group_repair_supervisor"/>
+                <!-- <button name="action_review_order" states="to_review" string="Complete Review" type="object" groups="ecs_repair.group_repair_manager"/> -->
+                <button name="action_pass_qc" states="to_review,rework" string="QC Pass" type="object" groups="ecs_repair.group_repair_manager,ecs_repair.group_repair_qc"/> 
+                <button name="%(ecs_repair.act_qc_fail)d" states="to_review,rework" string="QC Fail" type="action" groups="ecs_repair.group_repair_manager,ecs_repair.group_repair_qc"/> 
+                <button name="action_complete_repair" states="to_complete" string="Complete Repair" type="object" groups="ecs_repair.group_repair_manager,ecs_repair.group_repair_qc"/>
+                <button name="action_generate_invoice" states="2binvoiced" string="Create Invoice" type="object"
+                    class="oe_highlight" groups="account.group_account_invoice"/>
+                <button name="action_close_order" states="invoiced" string="Done" type="object" groups="ecs_repair.group_repair_manager"/>
+                <button name="action_repair_cancel" string="Cancel Repair" type="object" groups="ecs_repair.group_repair_manager,ecs_repair.group_repair_supervisor"
+                    attrs="{'invisible': [('state', 'in', ['invoiced', 'done', 'cancel'])]}"/>
+                <button name="action_resend_edi_images" type="object" string="Resend EDI + Images" attrs="{'invisible': ['|', ('state', '!=', 'submitted'), ('edi_partner', '=', False)]}"/>
+                <button name="action_resend_images" type="object" string="Resend Images" attrs="{'invisible': ['|', ('state', '!=', 'submitted'), ('edi_partner', '=', False)]}"/>
+                <button name="action_resend_edifile" type="object" string="Resend EDI" groups="ecs_repair.group_repair_manager"/>
+                <button name="recompute_update_parts_spend" string="Recompute Parts Spend" type="object" groups="ecs_repair.group_visible"/> 
+                <button name="action_mass_done_all_repair_item" states="in_progress" string="Done All Repair Items" type="object" groups="ecs_repair.group_repair_manager,ecs_repair.group_repair_qc,ecs_repair.group_repair_supervisor,ecs_repair.group_repair_surveyor"/>
+            </xpath>
+            <xpath expr="////form/header/button[@name='print_repair_order']" position="before">
+                <button name="print_repair_eor" string="Print EOR" type="object"/>
+            </xpath>
+            <xpath expr="//form/sheet/div[@name='button_box']/button[@name='action_created_invoice']" position="attributes">
+                <attribute name="attrs">{'invisible': [('state', 'not in', ['draft_invoice', 'invoiced', 'done'])]}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='product_id']" position="attributes">
+                <attribute name="domain">[('type', 'in', ['product', 'consu']), ('repair_ok', '=', True)]</attribute>
+            </xpath>
+            <xpath expr="//field[@name='product_id']" position="before">
+                <field name="container_label" required="1"/>
+            </xpath>
+            <xpath expr="//field[@name='product_id']" position="after">
+                <field name="mode_id" attrs="{'invisible': [('edi_partner', '=', False)], 'required': [('edi_partner', '=', True)]}"/>
+            </xpath>
+            <xpath expr="//label[@for='product_qty']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//sheet/group/group[1]/div[1]" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='lot_id']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='pricelist_id']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='invoice_method']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='location_id']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='guarantee_limit']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='partner_id']" position="after">
+                <field name="edi_partner" invisible="1"/>                
+                <field name="tariff_id" required="1" domain="[('partner_id', '=', partner_id)]" />                
+                   <field name="warehouse_id" required="1"/>
+                   <field name="shop_code" readonly="1" force_save="1" 
+                       attrs="{'invisible': [('edi_partner', '=', False)], 'required': [('edi_partner', '=', True)]}"/>
+                <field name="return_repair_operation_id" groups="base.group_no_one"/>
+                <field name="repair_operation_id" groups="base.group_no_one"/>                
+            </xpath>
+            <xpath expr="//field[@name='address_id']" position="after">
+                <field name="repair_cause" string="Cause" attrs="{'invisible': [('edi_partner', '=', False)], 'required': [('edi_partner', '=', True)]}"/>
+                <field name="wo_type" string="WO-Type" attrs="{'invisible': [('edi_partner', '=', False)], 'required': [('edi_partner', '=', True)]}"/>
+                <field name="third_party_location" attrs="{'invisible': [('edi_partner', '=', False)]}"/>
+            </xpath>
+            <xpath expr="//field[@name='location_id']" position="after">
+                <field name="id" invisible="1"/>
+                <field name="estimation_date" />
+                <field name="posting_date" />
+                <field name="approval_date" />
+                <field name="planned_date" />
+                <field name="repair_date" />
+                <field name="completion_date" />
+                <field name="surveyor_id" />
+                <field name="qc_staff_id" />
+            </xpath>
+            <xpath expr="//field[@name='pricelist_id']" position="after">
+                <field name="reference" string="Reference Number" attrs="{'invisible': [('edi_partner', '=', False)], 'required': [('edi_partner', '=', True)]}"/>
+            </xpath>
+            <xpath expr="//form/sheet/notebook/page[1]" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//form/sheet/notebook/page[2]" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//form/sheet/notebook/page[2]" position="after">
+                <page string="Damage" name="damage_page_line">
+                    <field name="damage_line_ids" context="{'default_repair_order_id': active_id, 'tariff_id': tariff_id}"
+                        attrs="{'readonly': ['|', ('id', '=', False), ('state', 'not in', ['draft', 'submitted', 'reject'])]}" mode="tree,kanban">
+                        <form>
+                            <notebook>
+                                <page string="Damage">
+                                    <group>
+                                        <group>
+                                            <field name="seq_num" />
+                                            <field name="repair_order_id" invisible="1"/>
+                                            <field name="tariff_id" invisible="1"/>
+                                            <field name="mode_id" invisible="1"/>
+                                            <field name="edi_partner" invisible="1"/>
+                                        </group>
+                                    </group>
+                                    <group>
+                                        <group>
+                                            <field name="component_id" />
+                                            <field name="location_id" />
+                                            <field name="damage_type_id" />
+                                            <field name="image_quantity" invisible="1"/>   
+                                        </group>
+                                        <group>
+                                            <field name="repair_type_id" />
+                                            <field name="length" />
+                                            <field name="width" />                                            
+                                        </group>
+                                    </group>
+                                    <group>
+                                        <group>
+                                            <field name="name" force_save="1"/>
+                                            <field name="quantity" />
+                                            <field name="description" />
+                                            <field name="third_party_indicator"  attrs="{'invisible': [('parent.edi_partner', '=', False)], 'required': [('edi_partner', '=', True)]}"/>
+
+                                        </group>
+                                    </group>
+                                    <group string="Upload Image" name="public_document">
+                                        <field name="public_ids" readonly="1" mode="kanban,tree" nolabel="1" widget="many2many_tags"/>
+                                    </group>
+                                    <div class="oe_edit_only">
+                                        <button name="wizard_uploader" attrs="{'invisible': [('image_quantity', '>=', 5)]}" string="Upload Document" type="object" class="oe_highlight"/>
+                                    </div>
+                                </page>
+                            </notebook>
+                        </form>
+                        <tree>
+                            <field name="repair_order_id" invisible="1"/>
+                            <field name="edi_partner" invisible="1"/>
+                            <field name="seq_num" />
+                            <field name="component_id" />
+                            <field name="location_id" />
+                            <field name="damage_type_id" />
+                            <field name="repair_type_id" />
+                            <field name="length" />
+                            <field name="width" />
+                            <field name="quantity" />
+                            <field name="name" />
+                            <field name="description" />
+                            <field name="third_party_indicator"  attrs="{'column_invisible': [('parent.edi_partner', '=', False)], 'required': [('edi_partner', '=', True)]}"/>
+                            <field name="public_ids" widget="many2many_tags" string="Upload Document"/>
+                            <button name="action_show_documents" string="Upload Documents" type="object" icon="fa-list" options='{"warn": true}'/>
+                        </tree>
+                        <kanban class="o_kanban_mobile">
+                            <field name="quantity" />
+                            <field name="name" />
+                            <templates>
+                                <t t-name="kanban-box">
+                                    <div t-attf-class="oe_kanban_card oe_kanban_global_click">
+                                        <div class="o_kanban_record_top">
+                                            <div class="o_kanban_record_headings">
+                                                <strong class="o_kanban_record_title"><span><field name="name"/></span></strong>
+                                            </div>
+                                            <button name="action_show_documents" string="Upload Documents" type="object" class="o_icon_button fa fa-list" options='{"warn": true}'/>
+                                        </div>
+                                        <div class="o_kanban_record_bottom">
+                                            <div class="oe_kanban_bottom_left" />
+                                            <div class="oe_kanban_bottom_right">
+                                                <span>
+                                                    <label for="quantity">Quantity:</label>
+                                                    <field name="quantity" />
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </t>
+                            </templates>
+                        </kanban>
+                    </field>
+                    <field name="public_ids" invisible="1"/>
+                    <div attrs="{'invisible': [('id', '!=', False)]}">
+                        <span style='color:red'><b>Save your EOR first before you add damage line.</b></span>
+                    </div>
+                </page>
+                <page string="Estimation" name="estimation_page_line">
+                    <field name= "estimation_line_ids" attrs="{'readonly': [('state', 'not in', ['draft', 'submitted'])]}">
+                        <tree editable="bottom" create="0">
+                            <field name="seq_num" />
+                            <field name="repair_code" string="Customer Repair Code"/>
+                            <field name="name" />
+                            <field name="quantity" />
+                            <field name="sts" groups="ecs_repair.group_repair_manager"/>
+                            <field name="labour_price" groups="ecs_repair.group_repair_manager"/>
+                            <field name="material_price" groups="ecs_repair.group_repair_manager"/>
+                            <field name="tax_ids" string="Taxes" widget="many2many_tags" readonly="1" force_save="1"
+                                groups="ecs_repair.group_repair_manager"/>
+                            <field name="price_tax" groups="ecs_repair.group_repair_manager"/>
+                            <field name="price_subtotal" groups="ecs_repair.group_repair_manager"/>
+                            <field name="approved" groups="ecs_repair.group_repair_manager"/>
+                        </tree>
+                    </field>
+                    <group class="oe_subtotal_footer oe_right" name="estimation_total" groups="ecs_repair.group_repair_manager,ecs_repair.group_repair_surveyor">
+                        <field name="sts_estimation"/>
+                        <field name="currency_id" invisible="1"/>
+                        <field name="amount_untaxed_estimation" string="Untaxed" groups="ecs_repair.group_repair_manager"/>
+                        <field name="amount_tax_estimation" string="Taxes" groups="ecs_repair.group_repair_manager"/>
+                        <field name="amount_total_estimation" string="Total" groups="ecs_repair.group_repair_manager"/>
+                    </group>
+                </page>
+                <page string="Repair" name="repair_page_line" attrs="{'invisible': [('state', '=', 'draft')]}">
+                    <field name= "work_order_line_ids" context="{'default_repair_order_id': active_id}"
+                        attrs="{'readonly': [('state', 'not in', ['approved', 'planned', 'in_progress', 'to_review'])]}">
+                        <tree editable="bottom" create="0">
+                            <field name="repair_order_id" invisible="1"/>
+                            <field name="seq_num" />
+                            <field name="name" />
+                            <field name="quantity" />
+                            <field name="sts" />
+                            <field name="mechanic1_id" />
+                            <field name="mechanic2_id" />
+                            <field name="mechanic3_id" />
+                            <field name="mechanic4_id" />
+                            <field name="repair_time" />
+                            <field name="state" string="Status" readonly="1"/>
+                            <field name="qc_status" readonly="1"/>
+                            <field name="attachment" />
+                        </tree>
+                    </field>
+                </page>
+                <page string="Parts Spent" name="parts_page_line" attrs="{'invisible': [('state', '=', 'draft')]}">
+                    <group>
+                        <group>
+                            <field name="repair_time" />
+                        </group>
+                    </group>
+                    <field name="parts_line_ids" attrs="{'invisible': [('state', 'in', ['draft', 'submitted'])]}">
+                        <tree editable="bottom">
+                            <field name="product_id" string="Material Name"/>
+                            <field name="quantity" />
+                            <field name="actual_quantity" />
+                            <field name="uom_id" />
+                            <field name="purchase_price" groups="ecs_repair.group_repair_manager,ecs_repair.group_repair_qc,ecs_repair.group_repair_supervisor"/>
+                            <field name="purchase_price_subtotal" string="Subtotal" groups="ecs_repair.group_repair_manager,ecs_repair.group_repair_qc,ecs_repair.group_repair_supervisor"/>
+                        </tree>
+                    </field>
+                    <group class="oe_subtotal_footer oe_right" name="parts_cost" attrs="{'invisible': [('state', 'in', ['draft', 'submitted'])]}">
+                        <field name="company_currency_id" invisible="1"/>
+                        <field name="amount_parts_cost" string="Total Purchase Cost" widget='monetary' options="{'currency_field': 'company_currency_id'}" groups="ecs_repair.group_repair_manager,ecs_repair.group_repair_qc,ecs_repair.group_repair_supervisor"/>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_repair_order_kanban_change_reference" model="ir.ui.view">
+        <field name="name">ecs_repair.view_repair_order_kanban_change_reference</field>
+        <field name="model">repair.order</field>
+        <field name="inherit_id" ref="repair.view_repair_kanban"/>
+        <field name="arch" type="xml">
+            <xpath expr='//t[@t-name="kanban-box"]/div/div[1]/div[1]' position='attributes'>
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr='//field[@name="name"]' position='after'>
+                <field name="container_label"/>
+            </xpath>
+            <xpath expr='//t[@t-name="kanban-box"]/div/div[1]/div[1]' position='before'>
+                <div class="col-6">
+                    <strong><span><t t-esc="record.container_label.value"/></span></strong>
+                </div>
+            </xpath>
+        </field>
+    </record>
+    <record id="view_repair_order_form_filter_change_reference" model="ir.ui.view">
+        <field name="name">ecs_repair.view_repair_order_form_filter_change_reference</field>
+        <field name="model">repair.order</field>
+        <field name="inherit_id" ref="repair.view_repair_order_form_filter"/>
+        <field name="arch" type="xml">
+            <xpath expr='//field[@name="name"]' position='before'>
+                <field name="container_label" string="Container ID"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Action "Done all Repair Items" -->
+	<record id="action_done_all_repair_item" model="ir.actions.server">
+		<field name="name">Done all Repair Items</field>
+		<field name="model_id" ref="repair.model_repair_order"/>
+		<field name="binding_model_id" ref="repair.model_repair_order"/>
+		<field name="state">code</field>
+		<field name="code">
+			if records:
+				action = records.action_mass_done_all_repair_item()
+		</field>
+	</record>
+</odoo>

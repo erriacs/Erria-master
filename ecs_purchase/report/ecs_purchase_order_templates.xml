@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<template id="report_ecs_purchase_order_doc">
+    <t t-call="web.basic_layout">
+    	<style>
+    	.table_nospace tr td {
+            padding:0px;margin:0px
+        }
+    	.table_border_all thead tr th {
+    		border-left:1px solid black;
+    		border-right:1px solid black;
+    		vertical-align:middle;
+    		padding:2px;
+        }
+    	.table_border_all tbody tr td {
+            border: 1px solid black;
+    		vertical-align:middle;
+    		padding:2px;
+        }
+    	</style>
+        <t t-set="o" t-value="o.with_context(lang=o.partner_id.lang)"/>
+        <div class="page" style="font-size:13px">
+        	<div class="row" width="100%">
+        		<table class="table_nospace" width="100%">
+        			<tr><td colspan="3" class="text-center"><h2>ĐƠN ĐẶT HÀNG</h2></td></tr>
+        			<tr><td colspan="3" class="text-center"><h3><i>(Purchase Order)</i></h3></td></tr>
+        			<tr><td colspan="3" class="text-center">&#160;</td></tr>
+        			<tr><td colspan="3"><strong t-field="o.company_id.name"/></td></tr>
+        			<tr><td colspan="3"><strong><i>(Erria Container Services Limited Liability Company)</i></strong></td></tr>
+        			<tr><td colspan="3">Địa chỉ <i>(Address)</i>: <span t-esc="o.company_id.partner_id._display_address(without_company=True)"/></td></tr>
+        			<tr>
+        				<td width="55%">Người liên hệ <i>(Attn)</i>: <span t-esc="o.user_id.name"/></td>
+        				<td width="25%">Số đơn đặt hàng <i>(Order No.)</i>:</td>
+        				<td width="20%"><span t-field="o.name"/></td>
+        			</tr>
+        			<tr>
+        				<td width="55%">Số điện thoại <i>(telephone)</i>: <span t-esc="o.user_id.phone"/></td>
+        				<td width="25%">Ngày đặt hàng <i>(Order date)</i>:</td>
+        				<td width="20%"><t t-if="o.date_order"><span t-esc="o.date_order.strftime('%d-%b-%Y')"/></t></td>
+        			</tr>
+        		</table>
+        	</div>
+            <div name="vendor_info" class="row mt32 mb32" width="100%">
+            	<table class="table_nospace" width="100%">
+            		<tr>
+            			<td width="25%"><strong>Nhà cung cấp <i>(Supplier)</i>:</strong></td>
+            			<td colspan="3"><strong t-esc="o.partner_id.name"/></td>
+            		</tr>
+            		<tr>
+            			<td width="25%">Địa chỉ <i>(Address)</i>:</td>
+            			<td colspan="3"><span t-esc="o.partner_id._display_address(without_company=True)"/></td>
+            		</tr>
+            		<tr>
+            			<td width="25%">MST <i>(Tax code)</i>:</td>
+            			<td colspan="3"><span t-esc="o.partner_id.vat"/></td>
+            		</tr>
+            		<tr>
+            			<td width="25%">Số điện thoại <i>(Telephone)</i>:</td>
+            			<td width="30%"><span t-esc="o.partner_id.phone"/></td>
+            			<td width="25%">Số fax <i>(Fax)</i>:</td>
+            			<td width="20%"></td>
+            		</tr>
+            	</table>
+            </div>
+            <div name="order" class="row" width="100%">
+            	Chúng tôi đặt hàng quý công ty với chi tiết như sau <i>(We order to purchase goods/services with details as below):</i>
+            </div>
+            <div name="product_order" class="row mt16 mb16" width="100%">
+            	<table class="table_border_all" width="100%">
+	                <thead>
+	                    <tr>
+	                    	<th width="3%" class="text-center" style="border-top:1px solid black;"><strong>STT</strong></th>
+	                        <th width="15%" class="text-center" style="border-top:1px solid black;"><strong>Nội dung</strong></th>
+	                        <th width="12%" class="text-center" style="border-top:1px solid black;"><strong>(Description)</strong></th>
+	                        <th width="7%" class="text-center" style="border-top:1px solid black;"><strong>ĐVT</strong></th>
+	                        <th width="7%" class="text-center" style="border-top:1px solid black;"><strong>Số lượng</strong></th>
+	                        <th width="9%" class="text-center" style="border-top:1px solid black;"><strong>Đơn giá</strong></th>
+	                        <th width="10%" class="text-center" style="border-top:1px solid black;"><strong>Thành tiền</strong></th>
+	                        <th width="10%" class="text-center" style="border-top:1px solid black;"><strong>Thuế VAT</strong></th>
+	                        <th width="10%" class="text-center" style="border-top:1px solid black;"><strong>Tổng cộng</strong></th>
+	                        <th width="10%" class="text-center" style="border-top:1px solid black;"><strong>Kho nhận</strong></th>
+	                        <th width="7%" class="text-center" style="border-top:1px solid black;"><strong>Chi chú</strong></th>
+	                    </tr>
+	                    <tr>
+	                    	<th class="text-center"><strong><i>(No)</i></strong></th>
+	                    	<th class="text-center"><strong><i></i></strong></th>
+	                    	<th class="text-center"><strong><i></i></strong></th>
+	                    	<th class="text-center"><strong><i>(Unit)</i></strong></th>
+	                    	<th class="text-center"><strong><i>(Quantity)</i></strong></th>
+	                    	<th class="text-center"><strong><i>(Price)</i></strong></th>
+	                    	<th class="text-center"><strong><i>(Amount before VAT)</i></strong></th>
+	                    	<th class="text-center"><strong><i>(VAT)</i></strong></th>
+	                    	<th class="text-center"><strong><i>(Total Amount)</i></strong></th>
+	                    	<th class="text-center"><strong><i>(Receipt WH)</i></strong></th>
+	                    	<th class="text-center"><strong><i>(Note)</i></strong></th>
+	                    </tr>
+	                </thead>
+	                <tbody>
+	                	<t t-set="no" t-value="1"/>
+	                	<t t-set="total_price_subtotal" t-value="0"/>
+	                	<t t-set="total_price_tax" t-value="0"/>
+	                	<t t-set="total_price_total" t-value="0"/>
+	                    <tr t-foreach="o.order_line" t-as="line">
+	                    	<td width="3%" class="text-right"><t t-esc="no"/></td>
+	                        <td><span t-field="line.product_id.name"/></td>
+	                        <td class="text-center"><span t-field="line.name"/></td>
+	                        <td class="text-center"><span t-field="line.product_uom.name"/></td>
+	                        <td class="text-right"><span t-esc="line.product_qty"/></td>
+	                        <td class="text-right"><span t-esc="'{:,}'.format(int(line.price_unit))"/></td>
+	                        <td class="text-right"><span t-esc="'{:,}'.format(int(line.price_subtotal))"/></td>
+	                        <td class="text-right"><span t-esc="'{:,}'.format(int(line.price_tax))"/></td>
+	                        <td class="text-right"><span t-esc="'{:,}'.format(int(line.price_total))"/></td>
+	                        <td class="text-right"><span t-field="line.picking_type_id.warehouse_id"/></td>
+	                        <td></td>
+	                        <t t-set="no" t-value="no+1"/>
+	                        <t t-set="total_price_subtotal" t-value="total_price_subtotal+line.price_subtotal"/>
+		                	<t t-set="total_price_tax" t-value="total_price_tax+line.price_tax"/>
+		                	<t t-set="total_price_total" t-value="total_price_total+line.price_total"/>
+	                    </tr>
+	                    <tr>
+	                    	<td width="3%" class="text-right"></td>
+	                    	<td colspan="4" class="text-center"><strong>TỔNG CỘNG <i>(TOTAL)</i></strong></td>
+	                    	<td class="text-right"></td>
+	                    	<td class="text-right"><strong t-esc="'{:,}'.format(int(total_price_subtotal))"/></td>
+	                    	<td class="text-right"><strong t-esc="'{:,}'.format(int(total_price_tax))"/></td>
+	                    	<td class="text-right"><strong t-esc="'{:,}'.format(int(total_price_total))"/></td>
+	                    	<td></td>
+	                    	<td></td>
+	                    </tr>
+	                </tbody>
+	            </table>
+            </div>
+            <div class="row" width="100%">
+            	<table width="100%">
+            		<tr>
+            			<td width="32%"><strong>Bằng chữ <i>(in word)</i>:</strong></td>
+            			<td width="68%"></td>
+            		</tr>
+            		<tr>
+            			<td width="32%">&#160;</td>
+            			<td width="68%">&#160;</td>
+            		</tr>
+            		<!-- <tr>
+            			<td width="32%"><strong>Địa điểm nhận hàng <i>(Place of receiving)</i>:</strong></td>
+            			<td width="68%"><t t-if="o.picking_type_id and o.picking_type_id.warehouse_id">
+	                        <span t-field="o.picking_type_id.warehouse_id.name"/></t></td>
+            		</tr> -->
+            		<tr>
+            			<td width="32%">&#160;</td>
+            			<td width="68%">&#160;</td>
+            		</tr>
+            		<tr>
+            			<td colspan="2"><strong>Thông tin xuất hóa đơn <i>(Information for issuing invoice)</i>:</strong></td>
+            		</tr>
+            		<tr>
+            			<td width="32%"><strong>Tên Cty <i>(Company name)</i>:</strong></td>
+            			<td width="68%"><strong t-field="o.company_id.name"/></td>
+            		</tr>
+            		<tr>
+            			<td width="32%"><strong>Địa chỉ <i>(Address)</i>:</strong></td>
+            			<td width="68%"><strong t-esc="o.company_id.partner_id._display_address(without_company=True)"/></td>
+            		</tr>
+            		<tr>
+            			<td width="32%"><strong>MST <i>(Tax Code)</i>:</strong></td>
+            			<td width="68%"><strong t-esc="o.company_id.partner_id.vat"/></td>
+            		</tr>
+            	</table>
+            </div>
+            <div class="row mt16" width="100%">
+            	<table width="100%">
+            		<tr>
+            			<td colspan="4"><strong>Hình thức thanh toán <i>(Payment method)</i> :</strong></td>
+            		</tr>
+            		<tr>
+            			<td width="3%" class="text-center">*</td>
+            			<td width="75%"><strong>Tiền mặt/Chuyển khoản <i>(Cash/Bank transfer)</i></strong></td>
+            			<td width="10%" style="border:1px solid black"></td>
+            			<td width="12%"></td>
+            		</tr>
+            		<tr>
+            			<td colspan="4" style="font-size:4px">&#160;</td>
+            		</tr>
+            		<tr>
+            			<td width="3%" class="text-center">*</td>
+            			<td width="75%"><strong>Chuyển khoản sau khi giao hàng và nhận hóa đơn</strong></td>
+            			<td width="10%" style="border:1px solid black"></td>
+            			<td width="12%"></td>
+            		</tr>
+            		<tr>
+            			<td width="3%" class="text-center"></td>
+            			<td width="75%"><i>(Bank transfer after receiving goods and invoices).</i></td>
+            			<td width="10%"></td>
+            			<td width="12%"></td>
+            		</tr>
+            	</table>
+            </div>
+            <div class="row mt32" width="100%">
+            	<table width="100%">
+            		<tr>
+            			<td width="5%"></td>
+            			<td width="25%" class="text-center"><strong>Người đặt hàng</strong></td>
+            			<td width="40%"></td>
+            			<td width="25%" class="text-center"><strong>Duyệt bởi</strong></td>
+            			<td width="5%"></td>
+            		</tr>
+            		<tr>
+            			<td width="5%"></td>
+            			<td width="25%" class="text-center"><i>(Requested by)</i></td>
+            			<td width="40%"></td>
+            			<td width="25%" class="text-center"><i>(Approved by)</i></td>
+            			<td width="5%"></td>
+            		</tr>
+            		<tr height="100px">
+            			<td width="5%"></td>
+            			<td width="25%" class="text-center" height="100px" style="border-bottom:1px solid black">&#160;</td>
+            			<td width="40%"></td>
+            			<td width="25%" class="text-center" height="100px" style="border-bottom:1px solid black">&#160;</td>
+            			<td width="5%"></td>
+            		</tr>
+            	</table>
+            </div>
+        </div>
+    </t>
+</template>
+
+<template id="report_ecs_purchase_order">
+    <t t-call="web.html_container">
+        <t t-foreach="docs" t-as="o">
+            <t t-call="ecs_purchase.report_ecs_purchase_order_doc" t-lang="o.partner_id.lang"/>
+        </t>
+    </t>
+</template>
+</odoo>

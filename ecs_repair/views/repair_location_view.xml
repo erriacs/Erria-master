@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="repair_location_tree_view" model="ir.ui.view">
+        <field name="name">Repair Location Tree view</field>
+        <field name="model">repair.location</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="code" />
+                <field name="name" />
+                <field name="component_ids" widget="many2many_tags" />
+            </tree>
+        </field>
+    </record>
+    <record id="repair_location_form_view" model="ir.ui.view">
+        <field name="name">Repair Location Form view</field>
+        <field name="model">repair.location</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                        <label for="code" class="oe_edit_only"/>
+                        <field name="code" />
+                        </h1>
+                    </div>
+                    <group>
+                        <field name="name" />
+                        <field name="component_ids" widget="many2many_tags" />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+    <menuitem id="menu_repair_invoicing" name="Invoices" parent="repair.menu_repair_order" sequence="3" />
+    <menuitem id="menu_repair_out_invoice" action="account.action_invoice_tree1" parent="menu_repair_invoicing" sequence="1"
+    	groups="account.group_account_user,account.group_account_invoice"/>
+    <menuitem id="menu_repair_out_refund" action="account.action_invoice_out_refund" parent="menu_repair_invoicing" sequence="2"
+    	groups="account.group_account_user,account.group_account_invoice"/>
+    <menuitem id="menu_repair_account_payments_receivable" action="account.action_account_payments"
+		parent="menu_repair_invoicing" sequence="3" groups="account.group_account_user,account.group_account_invoice"/>
+	<menuitem id="menu_repair_product_product_menu_sellable" action="stock.product_template_action_product"
+		name="Products" parent="menu_repair_invoicing" sequence="4"/>
+
+</odoo>

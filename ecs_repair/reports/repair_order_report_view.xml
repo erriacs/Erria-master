@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<record id="repair_order_report_pivot_view" model="ir.ui.view">
+		<field name="name">repair.order.report.pivot</field>
+		<field name="model">repair.order.report</field>
+		<field name="arch" type="xml">
+			<pivot string="Repair Order Reporting">
+				<field name="repair_id" type="row"/>
+				<field name="location_id" type="row"/>
+				<field name="damage_id" type="row"/>
+				<field name="repair_type_id" type="row"/>
+				<field name="component_id" type="row"/>
+				<field name="product_id" type="row"/>
+				<field name="quantity" type="measure" string="Planned Quantity"/>
+				<field name="actual_quantity" type="measure"/>
+				<field name="approval_day" type="measure"/>
+				<field name="repair_day" type="measure"/>
+				<field name="finished_repair_day" type="measure"/>
+				<field name="planned_time" type="measure"/>
+				<field name="real_time" type="measure"/>
+				<field name="state" type="row"/>
+			</pivot>
+		</field>
+	</record>
+	
+	<record id="repair_order_report_search_view" model="ir.ui.view">
+		<field name="name">repair.order.report.search</field>
+		<field name="model">repair.order.report</field>
+		<field name="arch" type="xml">
+			<search string="Repair Order Reporting">
+				<field name="container_label"/>
+				<field name="partner_id"/>
+				<field name="product_repair_id"/>
+				<field name="warehouse_id"/>
+				<field name="employee_id"/>
+				<field name="state"/>
+				<field name="repair_date"/>
+				<group expand="0" string="Filter by State">
+					<filter string="Quotation" name="quotation" domain="[('state', '=', 'draft')]"/>
+					<filter string="Cancel" name="cancel" domain="[('state', '=', 'cancel')]"/>
+					<filter string="Confirmed" name="confirmed" domain="[('state', '=', 'confirmed')]"/>
+					<filter string="Under Repair" name="under_repair" domain="[('state', '=', 'under_repair')]"/>
+					<filter string="Ready to Repair" name="ready" domain="[('state', '=', 'Ready to Repair')]"/>
+					<filter string="To be Invoiced" name="2binvoiced" domain="[('state', '=', '2binvoiced')]"/>
+					<filter string="Invoice Exception" name="invoice_except" domain="[('state', '=', 'invoice_except')]"/>
+					<filter string="Repaired" name="done" domain="[('state', '=', 'done')]"/>
+					<filter string="Submitted" name="submitted" domain="[('state', '=', 'submitted')]"/>
+					<filter string="Approved" name="approved" domain="[('state', '=', 'approved')]"/>
+					<filter string="Reject" name="reject" domain="[('state', '=', 'reject')]"/>
+					<filter string="Planned" name="planned" domain="[('state', '=', 'planned')]"/>
+					<filter string="In Progress" name="in_progress" domain="[('state', '=', 'in_progress')]"/>
+					<filter string="Ready to Review" name="to_review" domain="[('state', '=', 'to_review')]"/>
+					<filter string="Draft Invoice" name="draft_invoice" domain="[('state', '=', 'draft_invoice')]"/>
+					<filter string="Invoiced" name="invoiced" domain="[('state', '=', 'invoiced')]"/>
+				</group>
+			</search>
+		</field>
+	</record>
+
+	<act_window id="action_repair_order_report"
+				name="Repair Order Report"
+				res_model="repair.order.report"
+				view_mode="pivot"
+	/>
+	
+	<menuitem 
+		id="parent_repair_order_report"
+		name="Reporting"
+		parent="repair.menu_repair_order"
+		groups="ecs_repair.group_repair_manager"
+		sequence="11"
+	/>
+	
+	<menuitem 
+		id="repair_order_report"
+		name="Repair Order Report"
+		action="action_repair_order_report"
+		parent="ecs_repair.parent_repair_order_report"
+		sequence="1"
+	/>
+</odoo>

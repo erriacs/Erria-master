@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_product_stock_expiration" name="Product Stock Expiry" action="action_product_stock_expiration" parent="stock.menu_warehouse_report" sequence="1"/>
+</odoo>

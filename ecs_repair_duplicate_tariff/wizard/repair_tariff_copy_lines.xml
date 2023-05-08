@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <record id="repair_tariff_copy_lines_view_form" model="ir.ui.view">
+            <field name="name">repair.tariff.copy.lines.view.form</field>
+            <field name="model">repair.tariff.copy.lines.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Copy Tariff Lines">
+                    <group>
+                        <group>
+                            <field name="source_id"/>
+                        </group>
+                        <group>
+                            <field name="target_id"/>
+                            <field name="target_sts_value" invisible="1"/>
+                        </group>
+                    </group>
+                    <group>
+                        <div>The copy operation may take several minutes if duplicating large amount of lines. <strong>Please do not close this window or start another copy operation</strong> until it is done and shows you the result.<br />
+                        <strong>Once started, the copying process <abbr title="Unless the server administrator restarts the postgresql service or the whole server. Restart of Odoo is not enough.">cannot be cancelled</abbr>.</strong> Please start it only when you are 100% sure the source and target tariffs are correct.<br />
+                        If you lost the connection or reloaded the window, you need to wait until you can open the target tariff with the copied lines present. Please, do not start any more copying until the previously started process has finished and you can see the copied lines. If it is taking very long (typically over an hour), please ask the support to check if the database is still working.</div>
+                    </group>
+                    <footer>
+                        <button string="Copy Tariff Lines" name="copy_tariff_lines" type="object" class="btn-primary"/>
+                        <button string="Discard" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <act_window id="action_repair_tariff_copy_lines" name="Copy Tariff Lines" res_model="repair.tariff.copy.lines.wizard"  view_mode="form" target="new"/>
+
+    </data>
+</odoo>

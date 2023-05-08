@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_server_action_form_group" model="ir.ui.view">
+        <field name="name">view.server.action.form.group</field>
+        <field name="model">ir.actions.server</field>
+        <field name="inherit_id" ref="base.view_server_action_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form/sheet/notebook" position="inside">
+                <page string="Security">
+                    <field name="groups_id"/>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="repair_order_action_server_confirm" model="ir.actions.server">
+        <field name="name">Action Recompute Parts Spend</field>
+        <field name="type">ir.actions.server</field>
+        <field name="model_id" ref="repair.model_repair_order"/>
+        <field name="binding_model_id" ref="repair.model_repair_order"/>
+        <field name="state">code</field>
+        <field name="groups_id" eval="[(4, ref('ecs_repair.group_visible'))]"/>
+        <field name="code">
+            if records:
+                action = records.recompute_update_parts_spend()
+        </field>
+    </record>
+
+    <record id="repair_order_action_server_approve" model="ir.actions.server">
+        <field name="name">Approve</field>
+        <field name="type">ir.actions.server</field>
+        <field name="model_id" ref="repair.model_repair_order"/>
+        <field name="binding_model_id" ref="repair.model_repair_order"/>
+        <field name="state">code</field>
+        <field name="code">
+            if records:
+                action = records.action_server_approve()
+        </field>
+    </record>
+
+    <record id="repair_order_action_server_approve" model="ir.actions.server">
+        <field name="name">Resend EDI</field>
+        <field name="type">ir.actions.server</field>
+        <field name="model_id" ref="repair.model_repair_order"/>
+        <field name="binding_model_id" ref="repair.model_repair_order"/>
+        <field name="state">code</field>
+        <field name="code">
+            if records:
+                action = records.action_resend_edifile()
+        </field>
+    </record>
+
+    <record id="repair_order_action_server_to_complete" model="ir.actions.server">
+        <field name="name">Complete Repair</field>
+        <field name="type">ir.actions.server</field>
+        <field name="model_id" ref="repair.model_repair_order"/>
+        <field name="binding_model_id" ref="repair.model_repair_order"/>
+        <field name="state">code</field>
+        <field name="code">
+            if records:
+                action = records.action_complete_repair()
+        </field>
+    </record>
+</odoo>

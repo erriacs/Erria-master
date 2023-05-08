@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_wizard_uploader_form" model="ir.ui.view">
+        <field name="name">wizard.uploader.form</field>
+        <field name="model">wizard.uploader</field>
+        <field name="arch" type="xml">
+            <form string="Upload Document">
+                <sheet>
+                    <field name="repair_line_id" invisible="1"/>
+                    <field name="repair_order_id" invisible="1"/>
+                    <field name="public_id" invisible="1"/>
+                    <group>
+                        <field name="evidence_1_file" invisible="1"/>
+                        <field name="evidence_1" filename="evidence_1_file"/>
+                        <field name="evidence_2_file" invisible="1"/>
+                        <field name="evidence_2" filename="evidence_2_file"/>
+                        <field name="evidence_3_file" invisible="1"/>
+                        <field name="evidence_3" filename="evidence_3_file"/>
+                        <field name="evidence_4_file" invisible="1"/>
+                        <field name="evidence_4" filename="evidence_4_file"/>
+                        <field name="evidence_5_file" invisible="1"/>
+                        <field name="evidence_5" filename="evidence_5_file"/>
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="action_upload_document" string="Upload" type="object" class="oe_highlight"/>
+                    <button special="cancel" string="Cancel" class="oe_highlight"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,37 @@
+<odoo>      <!-- Default Syntax, always Odoo -->
+        <record id='custom_product_supplierinfo_form_view' model="ir.ui.view">    <!-- Free-text, ID for your view -->
+            <field name="name">custom.product.supplierinfo.form.view</field>      <!-- Free-text, Name for your view -->
+            <field name="model">product.supplierinfo</field>                      <!-- Model/Object that you want to put your custom into -->
+            <field name="inherit_id" ref='product.product_supplierinfo_form_view' />  <!-- Inherit the views on the view that you want to put your custom into -->
+            <field name="arch" type="xml">                                  <!-- Default Syntax, always Arch XML -->
+                <!--<field name='date_end' position='after'>-->
+                <xpath expr="//field[@name='date_end']/.." position="after">
+                    <label for="factory_price"/>
+                    <div>
+                        <field name="factory_price" class="oe_inline"/>
+                        <field name="factory_price_currency" class="oe_inline"/> <!--  groups="base.group_multi_currency" -->
+                    </div>
+                    <label for="landed_price"/>
+                    <div>
+                        <field name="landed_price" class="oe_inline"/>
+                        <field name="landed_price_currency" class="oe_inline"/> <!--  groups="base.group_multi_currency" -->
+                    </div>
+                    <field name='notes'/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id='custom_product_supplierinfo_tree_view' model="ir.ui.view">    <!-- Free-text, ID for your view -->
+            <field name="name">custom.product.supplierinfo.tree.view</field>      <!-- Free-text, Name for your view -->
+            <field name="model">product.supplierinfo</field>                      <!-- Model/Object that you want to put your custom into -->
+            <field name="inherit_id" ref='product.product_supplierinfo_tree_view' />  <!-- Inherit the views on the view that you want to put your custom into -->
+            <field name="arch" type="xml">                                  <!-- Default Syntax, always Arch XML -->
+                <field name='currency_id' position='after'>                 <!-- Reference for your custom fields. Position: Before/After/Replace -->
+                    <field name='factory_price'/>
+                    <field name='factory_price_currency'/>
+                    <field name='landed_price'/>
+                    <field name='landed_price_currency'/>
+                </field>
+            </field>
+        </record>
+</odoo>

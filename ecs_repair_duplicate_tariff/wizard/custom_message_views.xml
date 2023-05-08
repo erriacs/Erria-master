@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <record id="custom_message_view_form" model="ir.ui.view">
+            <field name="name">custom.message.view.form</field>
+            <field name="model">custom.msg.wiz</field>
+            <field name="arch" type="xml">
+                <form string="Server Message">
+                    <div>
+                        <field name="message" widget="html" readonly="1"/>
+                        <field name="target_res_model" invisible="1"/>
+                        <field name="target_res_id" invisible="1"/>
+                    </div>
+                    <footer>
+                        <button string="OK" class="btn-primary" special="cancel" attrs="{'invisible':[('target_res_id', '!=', False)]}"/>
+                        <button string="See Result" name="ok" type="object" class="btn-primary" attrs="{'invisible':[('target_res_id', '=', False)]}"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_custom_message_form"
+            model="ir.actions.act_window">
+            <field name="name">Server Message</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">custom.msg.wiz</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="custom_message_view_form"/>
+            <field name="target">new</field>
+        </record>
+
+    </data>
+</odoo>

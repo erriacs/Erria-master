@@ -1,0 +1,37 @@
+<odoo>      <!-- Default Syntax, always Odoo -->
+
+        <record id='custom_contact_form_view' model="ir.ui.view">    <!-- Free-text, ID for your view -->
+            <field name="name">custom.contact.form.view</field>      <!-- Free-text, Name for your view -->
+            <field name="model">res.partner</field>                      <!-- Model/Object that you want to put your custom into -->
+            <field name="inherit_id" ref='purchase.view_partner_property_form' />  <!-- Inherit the views on the view that you want to put your custom into -->
+            <field name="arch" type="xml">                                  <!-- Default Syntax, always Arch XML -->
+                <field name='property_purchase_currency_id' position='after'>                 <!-- Reference for your custom fields. Position: Before/After/Replace -->
+                    <field name='vendor_location'/>
+                    <field name='price_term'/>
+                </field>
+            </field>
+        </record>
+
+        <record id='custom_bank_account_form_view' model="ir.ui.view">    <!-- Free-text, ID for your view -->
+            <field name="name">custom.bank.account.form.view</field>      <!-- Free-text, Name for your view -->
+            <field name="model">res.partner.bank</field>                      <!-- Model/Object that you want to put your custom into -->
+            <field name="inherit_id" ref='base.view_partner_bank_form' />  <!-- Inherit the views on the view that you want to put your custom into -->
+            <field name="arch" type="xml">                                  <!-- Default Syntax, always Arch XML -->
+                <field name='bank_id' position='after'>                 <!-- Reference for your custom fields. Position: Before/After/Replace -->
+                    <field name='bank_branch'/>
+                </field>
+            </field>
+        </record>
+
+        <record id='custom_partner_bank_list_view' model="ir.ui.view">    <!-- Free-text, ID for your view -->
+            <field name="name">custom.partner.bank.list.view</field>      <!-- Free-text, Name for your view -->
+            <field name="model">res.partner</field>                      <!-- Model/Object that you want to put your custom into -->
+            <field name="inherit_id" ref='account.view_partner_property_form' />  <!-- Inherit the views on the view that you want to put your custom into -->
+            <field name="arch" type="xml">                                  <!-- Default Syntax, always Arch XML -->
+                <field name='bank_id' position='after'>                 <!-- Reference for your custom fields. Position: Before/After/Replace -->
+                    <field name='bank_branch'/>
+                </field>
+            </field>
+        </record>
+
+</odoo>

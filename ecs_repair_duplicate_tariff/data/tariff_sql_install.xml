@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+
+        <!-- Create PostgreSQL function for tariff duplication -->
+        <function model="repair.tariff" name="_install_SQL"/>
+
+    </data>
+</odoo>
